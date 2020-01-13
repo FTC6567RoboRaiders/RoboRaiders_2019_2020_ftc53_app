@@ -1,4 +1,5 @@
 package RoboRaiders.hubbot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -15,6 +16,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import static org.opencv.core.CvType.CV_8UC1;
 
 @TeleOp
+@Disabled
 public class BrightnessDetection extends LinearOpMode {
     OpenCvCamera phone_camera;
     SamplePipeline stone_pipeline;

@@ -1,49 +1,16 @@
-package RoboRaiders.hubbot;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+package RoboRaiders.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import static org.opencv.core.CvType.CV_8UC1;
 
-@TeleOp
-public class BrightnessDetectionWebcam extends LinearOpMode {
-    public static final String TAG = "Vuforia Navigation Sample";
+public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
 
-    OpenCvCamera webcam;
-   // BrightnessDetection.SamplePipeline stone_pipeline;
-    SamplePipeline stone_pipeline;
-    public void runOpMode() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-
-        webcam.openCameraDevice();
-        stone_pipeline = new SamplePipeline();
-        webcam.setPipeline(stone_pipeline);
-
-        webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-        super.updateTelemetry(telemetry);
-        telemetry.addData("LEFT RECT", stone_pipeline.left_hue + " " + stone_pipeline.left_br);
-        telemetry.addData("RIGHT RECT", stone_pipeline.right_hue + " " + stone_pipeline.right_br);
-        telemetry.addData("PATTERN", stone_pipeline.pattern); }
-
-
-     }
-
-    class SamplePipeline extends OpenCvPipeline {
         int left_hue;
         int right_hue;
 
@@ -51,6 +18,18 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
         int right_br;
 
         int pattern;
+        float leftRec[]  = new float[4];
+        float rightRec[] = new float[4];
+
+        public RoboRaidersPipelineWebcam(int pattern, float[] leftRec, float[] rightRec){
+
+            this.pattern = pattern;
+            for (int i=0; i<4; i++) {
+                this.leftRec[i] = leftRec[i];
+                this.rightRec[i] = rightRec[i];
+            }
+
+        }
 
         @Override
         public Mat processFrame(Mat input) {
@@ -59,18 +38,19 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
 
             int[] left_rect = {
                     //the second number here possibly represents the amount of sections you are splitting the screen into??   32
-                    (int) (input.cols() * (9f / 32f)), //the first number goes from left to right increasing, controls x axis
-                    (int) (input.rows() * (5f / 32f)), //the first number here controls the y axis
-                    (int) (input.cols() * (15f / 32f)),
-                    (int) (input.rows() * (15f / 32f))
+                    (int) (input.cols() * (leftRec[0] / 32f)), //the first number goes from left to right increasing, controls x axis
+                    (int) (input.rows() * (leftRec[1] / 32f)), //the first number here controls the y axis
+                    (int) (input.cols() * (leftRec[2] / 32f)),
+                    (int) (input.rows() * (leftRec[3] / 32f))
             };
 //because we rotated the camera, collumns are now rows and vice versa. Rows are now on the x-axis!
             int[] right_rect = {
-                    (int) (input.cols() * (9f / 32f)),
-                    (int) (input.rows() * (17f / 32f)),
-                    (int) (input.cols() * (15f / 32f)),
-                    (int) (input.rows() * (27f / 32f))
+                    (int) (input.cols() * (rightRec[0] / 32f)),
+                    (int) (input.rows() * (rightRec[1] / 32f)),
+                    (int) (input.cols() * (rightRec[2] / 32f)),
+                    (int) (input.rows() * (rightRec[3] / 32f))
             };
+
 
             Imgproc.rectangle(
                     input,
@@ -108,30 +88,40 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
             left_br = get_brightness((int) left_mean.val[0], (int) left_mean.val[1], (int) left_mean.val[2]);
             right_br = get_brightness((int) right_mean.val[0], (int) right_mean.val[1], (int) right_mean.val[2]);
 
+            // The skystone is not in frame since the stones in frame are "bright"
             if (left_br > 100 && right_br > 100) pattern = 1;
-            //skystone is not in frame
-            //above 100 is normal, bellow 100 is skystone
+
+            // The skystone is in frame but located on the right
             else if (left_br > 100 && right_br < 100) pattern = 3;
-            //skystone is on left
+
+            // The skeystone is in frame but located on the left
             else if (left_br < 100 && right_br > 100) pattern = 2;
-            //skystone is on right
+
+            // The skystone has not been found, so look at the brightness of the stones in frame
+            // If both stones are not "bright"
             else if (left_br < 100 && right_br < 100) {
+
+                // The left stone in frame is brighter than the right stone in frame
                 if (left_br > right_br) {
                     pattern = 3;
-                } else if (left_br < right_br) {
+                }
+
+                // The right stone in frame is brighter than the left stone in frame
+                else if (left_br < right_br) {
                     pattern = 2;
-                } else {
+                }
+
+                // Both stones are the same brightness so the stone is assumed to be out of frame
+                else {
                     pattern = 1;
                 }
             }
-                telemetry.addData("position", pattern);
-                telemetry.update();
-                sleep(100);
+            setPattern(pattern);
+
+
 
             return input;
         }
-    }
-
 
     private int get_hue(int red, int green, int blue) {
 
@@ -162,4 +152,14 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
     private int get_brightness(int red, int green, int blue) {
         return (int) (((double) (red + green + blue)) / 3);
     }
+
+    public void setPattern(int thePattern){
+            pattern = thePattern;
+    }
+
+    public int getPattern(){
+            return pattern;
+    }
+
+
 }

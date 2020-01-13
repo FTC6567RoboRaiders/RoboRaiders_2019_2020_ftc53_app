@@ -1,8 +1,8 @@
-package RoboRaiders.hubbot;
+package RoboRaiders.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -10,37 +10,50 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import static org.opencv.core.CvType.CV_8UC1;
 
-@TeleOp
-public class BrightnessDetectionWebcam extends LinearOpMode {
-    public static final String TAG = "Vuforia Navigation Sample";
-
-    OpenCvCamera webcam;
-   // BrightnessDetection.SamplePipeline stone_pipeline;
+@Autonomous
+@Disabled
+public class BrightnessDetectionAuto extends LinearOpMode {
+    OpenCvCamera phone_camera;
     SamplePipeline stone_pipeline;
-    public void runOpMode() {
+    public int pattern = 999;
+    public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-        webcam.openCameraDevice();
+        phone_camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phone_camera.openCameraDevice();
+
         stone_pipeline = new SamplePipeline();
-        webcam.setPipeline(stone_pipeline);
+        phone_camera.setPipeline(stone_pipeline);
 
-        webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+        phone_camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive() && pattern == 999) {
         super.updateTelemetry(telemetry);
+        telemetry.addData("FRAME", phone_camera.getFrameCount());
+        telemetry.addData("FPS", String.format("%.2f", phone_camera.getFps()));
+        telemetry.addData("TFT MS", phone_camera.getTotalFrameTimeMs());
+        telemetry.addData("PT MS", phone_camera.getPipelineTimeMs());
+        telemetry.addData("OT MS", phone_camera.getOverheadTimeMs());
+        telemetry.addData("MAX FPS", phone_camera.getCurrentPipelineMaxFps());
         telemetry.addData("LEFT RECT", stone_pipeline.left_hue + " " + stone_pipeline.left_br);
         telemetry.addData("RIGHT RECT", stone_pipeline.right_hue + " " + stone_pipeline.right_br);
-        telemetry.addData("PATTERN", stone_pipeline.pattern); }
+        telemetry.addData("PATTERN", pattern);
+        telemetry.update();
+        }
 
+        phone_camera.stopStreaming();
 
+        telemetry.addData("PATTERN", pattern);
+        telemetry.update();
+
+        Thread.sleep(2000);
      }
 
     class SamplePipeline extends OpenCvPipeline {
@@ -50,7 +63,7 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
         int left_br;
         int right_br;
 
-        int pattern;
+
 
         @Override
         public Mat processFrame(Mat input) {
@@ -62,14 +75,14 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
                     (int) (input.cols() * (9f / 32f)), //the first number goes from left to right increasing, controls x axis
                     (int) (input.rows() * (5f / 32f)), //the first number here controls the y axis
                     (int) (input.cols() * (15f / 32f)),
-                    (int) (input.rows() * (15f / 32f))
+                    (int) (input.rows() * (7f / 32f))
             };
-//because we rotated the camera, collumns are now rows and vice versa. Rows are now on the x-axis!
+
             int[] right_rect = {
-                    (int) (input.cols() * (9f / 32f)),
-                    (int) (input.rows() * (17f / 32f)),
-                    (int) (input.cols() * (15f / 32f)),
-                    (int) (input.rows() * (27f / 32f))
+                    (int) (input.cols() * (17f / 32f)),
+                    (int) (input.rows() * (5f / 32f)),
+                    (int) (input.cols() * (23f / 32f)),
+                    (int) (input.rows() * (7f / 32f))
             };
 
             Imgproc.rectangle(
@@ -111,17 +124,17 @@ public class BrightnessDetectionWebcam extends LinearOpMode {
             if (left_br > 100 && right_br > 100) pattern = 1;
             //skystone is not in frame
             //above 100 is normal, bellow 100 is skystone
-            else if (left_br > 100 && right_br < 100) pattern = 3;
-            //skystone is on left
-            else if (left_br < 100 && right_br > 100) pattern = 2;
+            else if (left_br > 100 && right_br < 100) pattern = 2;
             //skystone is on right
+            else if (left_br < 100 && right_br > 100) pattern = 3;
+            //skystone is on left
             else if (left_br < 100 && right_br < 100) {
                 if (left_br > right_br) {
-                    pattern = 3;
+                    pattern = 1;
                 } else if (left_br < right_br) {
                     pattern = 2;
                 } else {
-                    pattern = 1;
+                    pattern = 3;
                 }
             }
                 telemetry.addData("position", pattern);

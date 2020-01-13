@@ -31,6 +31,7 @@ package RoboRaiders.hubbot;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,6 +55,7 @@ import java.util.Locale;
  * @see <a href="http://www.adafruit.com/products/2472">Adafruit IMU</a>
  */
 @TeleOp(name = "Steeeves IMU Testing", group = "Sensor")
+@Disabled
 //@Disabled                            // Comment this out to add to the opmode list
 public class SteeevesIMUTest extends LinearOpMode
     {
