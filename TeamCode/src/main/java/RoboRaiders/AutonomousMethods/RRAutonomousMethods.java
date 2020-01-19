@@ -822,9 +822,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         encodersMoveStrafe(robot, 5, .5, "left");
         encodersMoveRTP(robot, 30, .8, "forward"); //robot parks under SkyBridge
 
-
     }
-
 
     /**
      * Will keep
