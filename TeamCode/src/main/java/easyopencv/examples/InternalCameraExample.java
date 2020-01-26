@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2019 OpenFTC Team
  *
@@ -20,9 +19,8 @@
  * SOFTWARE.
  */
 
-//package org.openftc.easyopencv.examples;
 package easyopencv.examples;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -31,12 +29,12 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 @TeleOp
-@Disabled
 public class InternalCameraExample extends LinearOpMode
 {
     OpenCvCamera phoneCam;
@@ -53,10 +51,10 @@ public class InternalCameraExample extends LinearOpMode
          * single-parameter constructor instead (commented out below)
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         // OR...  Do Not Activate the Camera Monitor View
-        //phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK);
+        //phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK);
 
         /*
          * Open the connection to the camera device
@@ -81,9 +79,7 @@ public class InternalCameraExample extends LinearOpMode
          * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
          * away from the user.
          */
-//        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-        phoneCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
-        //turn off auto rotate
+        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
         /*
          * Wait for the user to press start on the Driver Station

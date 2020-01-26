@@ -6,9 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-import org.openftc.easyopencv.OpenCvWebcam;
+//import org.openftc.easyopencv.OpenCvWebcam;
 
 import RoboRaiders.Autonomous.RoboRaidersPipeline;
 import RoboRaiders.Autonomous.RoboRaidersPipelineWebcam;
@@ -383,32 +384,34 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public int stoneDetection(){
-            OpenCvCamera phone_camera;
-            RoboRaidersPipeline stone_pipeline;
-            int pattern = 999;
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        OpenCvCamera phone_camera;
+        OpenCvInternalCamera phone_camera;
+        RoboRaidersPipeline stone_pipeline;
+        int pattern = 999;
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-            phone_camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-            phone_camera.openCameraDevice();
-            stone_pipeline = new RoboRaidersPipeline(pattern);
-            phone_camera.setPipeline(stone_pipeline);
+//        phone_camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phone_camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phone_camera.openCameraDevice();
+        stone_pipeline = new RoboRaidersPipeline(pattern);
+        phone_camera.setPipeline(stone_pipeline);
 
-            phone_camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+        phone_camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
-            while (opModeIsActive() && stone_pipeline.getPattern() == 999) {
-                telemetry.addData("FRAME", phone_camera.getFrameCount());
-                telemetry.addData("FPS", String.format("%.2f", phone_camera.getFps()));
-                telemetry.addData("TFT MS", phone_camera.getTotalFrameTimeMs());
-                telemetry.addData("PT MS", phone_camera.getPipelineTimeMs());
-                telemetry.addData("OT MS", phone_camera.getOverheadTimeMs());
-                telemetry.addData("MAX FPS", phone_camera.getCurrentPipelineMaxFps());
-                telemetry.addData("PATTERN", stone_pipeline.getPattern());
-                telemetry.update();
-            }
-            phone_camera.stopStreaming();
+        while (opModeIsActive() && stone_pipeline.getPattern() == 999) {
+            telemetry.addData("FRAME", phone_camera.getFrameCount());
+            telemetry.addData("FPS", String.format("%.2f", phone_camera.getFps()));
+            telemetry.addData("TFT MS", phone_camera.getTotalFrameTimeMs());
+            telemetry.addData("PT MS", phone_camera.getPipelineTimeMs());
+            telemetry.addData("OT MS", phone_camera.getOverheadTimeMs());
+            telemetry.addData("MAX FPS", phone_camera.getCurrentPipelineMaxFps());
             telemetry.addData("PATTERN", stone_pipeline.getPattern());
             telemetry.update();
-            return stone_pipeline.getPattern();
+        }
+        phone_camera.stopStreaming();
+        telemetry.addData("PATTERN", stone_pipeline.getPattern());
+        telemetry.update();
+        return stone_pipeline.getPattern();
 
     }
 
@@ -420,7 +423,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         RoboRaidersPipelineWebcam stone_pipeline;
         int pattern = 999;
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+//        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         webcam.openCameraDevice();
 

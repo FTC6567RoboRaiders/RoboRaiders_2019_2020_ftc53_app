@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright (c) 2019 OpenFTC Team
  *
@@ -21,22 +19,22 @@
  * SOFTWARE.
  */
 
-//package org.openftc.easyopencv.examples;
 package easyopencv.examples;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 @TeleOp
-@Disabled
 public class WebcamExample extends LinearOpMode
 {
     OpenCvCamera webcam;
@@ -55,10 +53,10 @@ public class WebcamExample extends LinearOpMode
          * single-parameter constructor instead (commented out below)
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         // OR...  Do Not Activate the Camera Monitor View
-        //webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         /*
          * Open the connection to the camera device
@@ -80,9 +78,7 @@ public class WebcamExample extends LinearOpMode
          * Keep in mind that the SDK's UVC driver (what OpenCvWebcam uses under the hood) only
          * supports streaming from the webcam in the uncompressed YUV image format. This means
          * that the maximum resolution you can stream at and still get up to 30FPS is 480p (640x480).
-         * Streaming at 720p will limit you to up to 10FPS. However, streaming at frame rates other
-         * than 30FPS is not currently supported, although this will likely be addressed in a future
-         * release. TLDR: You can't stream in greater than 480p from a webcam at the moment.
+         * Streaming at e.g. 720p will limit you to up to 10FPS and so on and so forth.
          *
          * Also, we specify the rotation that the webcam is used in. This is so that the image
          * from the camera sensor can be rotated such that it is always displayed with the image upright.

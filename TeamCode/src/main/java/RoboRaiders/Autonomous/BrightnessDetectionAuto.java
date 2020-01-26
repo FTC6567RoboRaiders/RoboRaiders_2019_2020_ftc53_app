@@ -9,6 +9,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -18,13 +19,15 @@ import static org.opencv.core.CvType.CV_8UC1;
 @Autonomous
 @Disabled
 public class BrightnessDetectionAuto extends LinearOpMode {
-    OpenCvCamera phone_camera;
+//    OpenCvCamera phone_camera;
+    OpenCvInternalCamera phone_camera;
     SamplePipeline stone_pipeline;
     public int pattern = 999;
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-        phone_camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phone_camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+//        phone_camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phone_camera.openCameraDevice();
 
         stone_pipeline = new SamplePipeline();

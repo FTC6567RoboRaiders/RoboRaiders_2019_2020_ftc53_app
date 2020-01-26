@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright (c) 2019 OpenFTC Team
  *
@@ -21,9 +19,8 @@
  * SOFTWARE.
  */
 
-//package org.openftc.easyopencv.examples;
 package easyopencv.examples;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -33,6 +30,7 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -46,7 +44,6 @@ import java.util.List;
  * purposes. We also show how to get data from the pipeline to your OpMode.
  */
 @TeleOp
-@Disabled
 public class PipelineStageSwitchingExample extends LinearOpMode
 {
     OpenCvCamera phoneCam;
@@ -63,7 +60,7 @@ public class PipelineStageSwitchingExample extends LinearOpMode
          */
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phoneCam.openCameraDevice();
         stageSwitchingPipeline = new StageSwitchingPipeline();
         phoneCam.setPipeline(stageSwitchingPipeline);
