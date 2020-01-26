@@ -28,6 +28,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     public float iza_newHeading;
     public Orientation iza_angles;
 
+    private static final double STRAFING_SCALE = 0.1;
+
 
     public void liftMotorRTPDriveWithStone(Robot robot) {
         robot.resetLiftEncoder();
@@ -829,48 +831,23 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     /**
-     * Will keep
+     * This is going to readjust the powers of the motors on the robot in order to keep it from going astray
      * @param robot
-     * @param distance
      * @param power
      * @param intendedHeading
-     * @param direction
      */
-    public void strafingStraight (Robot robot, double distance, double power, double intendedHeading, String direction) {
-        double power_adjustment;
-        double lPower;
-        double rPower;
-        robot.resetLiftEncoder();
-        robot.runWithEncoders();
+    public double[] strafingStraightPowerAdjustment (Robot robot, double power, double intendedHeading) {
+        double[] motorPowers = new double[4]; //We are creating a list that goes: leftfront, rightfront, leftback, rightback
 
-        final double v = robot.driveTrainCalculateCounts(distance);
-        double COUNTS = v; //COUNTS is now equal to the value calculated
+        double currentheading = robot.getIntegratedZAxis();
+        double deltaheading = currentheading - intendedHeading;
 
-        if (direction.equals("right")) { //if the desired direction is right
+        motorPowers[0] = power - (STRAFING_SCALE * Math.sin(Math.toRadians(deltaheading)));
+        motorPowers[1] = power - (STRAFING_SCALE * Math.sin(Math.toRadians(deltaheading)));
+        motorPowers[2] = power + (STRAFING_SCALE * Math.sin(Math.toRadians(deltaheading)));
+        motorPowers[3] = power + (STRAFING_SCALE * Math.sin(Math.toRadians(deltaheading)));
 
-            robot.setDriveMotorPower(power, -power, -power, power); //start strafing right
-
-            while (robot.getSortedEncoderCount() < COUNTS && opModeIsActive()) { //while the current count is
-                //still less than the desired count and the opMode has not been stopped
-
-                power_adjustment = (robot.getIntegratedZAxis() - intendedHeading) / 100.0;
-
-                if (power_adjustment > 0.05) {
-                    power_adjustment = 0.05;
-                }
-
-                lPower = power + power_adjustment; //left motor power adjustment
-                rPower = power - power_adjustment; // Right motor power adjustment
-
-                robot.setDriveMotorPower(lPower, -rPower, -lPower, rPower);
-
-
-                telemetry.addData("COUNTS", COUNTS);
-                telemetry.addData("Encoder Count", robot.getSortedEncoderCount());
-                telemetry.addData("Left Power", lPower).addData("Right Power", rPower);
-                telemetry.update();
-            }
-        }
+        return motorPowers;
     }
 
 }
