@@ -15,6 +15,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
     public boolean getSkystone       = false;          // Default to not get a skystone
     public boolean repoFoundation    = false;          // Default to not repositioning the foundation
     public boolean selectionsAreGood = false;          // Default that selections are not good
+    public boolean parkPerimeter     = false;          // Default parking location
 
     public Robot robot = new Robot();
 
@@ -36,6 +37,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
             loadSide = myAO.selectLoadSide();
             getSkystone = myAO.selectGetSkystone();
             repoFoundation = myAO.selectRepoFoundation();
+            parkPerimeter = myAO.selectParkingPostion();
 
 
             telemetry.setAutoClear(false);
@@ -45,6 +47,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
             telemetry.addLine().addData("Field Side: ", loadSide ? "Load  " : "Build  ");
             telemetry.addLine().addData("Get Skystone: ", getSkystone ? "Yes  " : "No  ");
             telemetry.addLine().addData("Move Foundation: ", repoFoundation ? "Yes  " : "No  ");
+            telemetry.addLine().addData("Parking at Perimeter", parkPerimeter ? "Yes" : "No");
 
             telemetry.update();
 
@@ -62,6 +65,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
         rtd.displayRobotTelemetry("Field Side",loadSide ? "Load" : "Build");
         rtd.displayRobotTelemetry("Get Skystone",getSkystone ? "Yes" : "No");
         rtd.displayRobotTelemetry("Move Foundation",repoFoundation ? "Yes" : "No");
+        rtd.displayRobotTelemetry("Parking at Permieter", parkPerimeter ? "Yes" : "No");
         waitForStart();
 
         robot.setCapstoneElbowUp();
@@ -91,8 +95,12 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
                         //foundation no
                         deliverStone(robot);
                     }
-                    //park code
-                    parkSkyBridgeBlue(robot);
+
+                    if (parkPerimeter) {
+                        parkSkyBridgeBlue(robot);
+                    }
+
+                    else {}
                 }
                 else{
                     //don't get Skystone and park
@@ -127,9 +135,13 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
                         //foundation no
                         deliverStone(robot);
                     }
-                    //park code
+
+                    if(parkPerimeter) {
                     parkSkyBridgeRed(robot);
                 }
+                    else {
+                    }
+                    }
                 else{
                     //don't get Skystone and park
                 }

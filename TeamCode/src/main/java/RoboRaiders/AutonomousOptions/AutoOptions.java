@@ -87,6 +87,14 @@ public class AutoOptions {
         return index == 0;
     }
 
+    public boolean selectParkingPostion() {
+        String[] locations = new String[]{"Yes", "No"};
+
+        int index = makeSelection("Parking Location?", locations);
+
+        return index == 0;
+    }
+
     public boolean selectGetSkystone() {
         String[] locations = new String[]{"Yes", "No"};
 
