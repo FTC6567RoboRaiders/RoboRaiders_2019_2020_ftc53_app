@@ -148,7 +148,7 @@ public class DetectingFoundationRed extends LinearOpMode
              */
             Imgproc.cvtColor(input, yCbCrChan2Mat, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(yCbCrChan2Mat, yCbCrChan2Mat, 2);
-            Imgproc.threshold(yCbCrChan2Mat, thresholdMat, 80, 255, Imgproc.THRESH_BINARY);
+            Imgproc.threshold(yCbCrChan2Mat, thresholdMat, 69, 255, Imgproc.THRESH_BINARY);
             Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
             numContoursFound = contoursList.size();
             input.copyTo(contoursOnFrameMat);
@@ -163,11 +163,11 @@ public class DetectingFoundationRed extends LinearOpMode
 
                 case THRESHOLD:
                 {
-                    Imgproc.findContours(thresholdMat, stickerContours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-                    Imgproc.drawContours(contoursOnFrameMat,stickerContours,-1,new Scalar(250,0,0),2);
+                    //Imgproc.findContours(thresholdMat, stickerContours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+                    //Imgproc.drawContours(contoursOnFrameMat,stickerContours,-1,new Scalar(250,0,0),2);
                     double bestOneSoFar = Double.MAX_VALUE;
                     Rect bestRect = null;
-                    for(MatOfPoint cont : stickerContours){
+                    for(MatOfPoint cont : contoursList){
                         //double score = Double.MAX_VALUE;
 
                         // Get bounding rect of contour
