@@ -12,6 +12,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.nio.channels.Channels;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 public class DetecctingTheColorRed extends LinearOpMode {
 
     OpenCvCamera phoneCam;
-    StageSwitchingPipeline stageSwitchingPipeline;
+    StageSwitchingPipline stageSwitchingPipeline;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,7 +29,7 @@ public class DetecctingTheColorRed extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phoneCam.openCameraDevice();
-        stageSwitchingPipeline = new DetectingFoundationRed.StageSwitchingPipeline();
+        stageSwitchingPipeline = new StageSwitchingPipline();
         phoneCam.setPipeline(stageSwitchingPipeline);
         phoneCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
 
@@ -50,70 +51,65 @@ public class DetecctingTheColorRed extends LinearOpMode {
     private double threshold = -1;
     private List<Mat> channels = new ArrayList<>();
 
+    class StageSwitchingPipline extends OpenCvPipeline {
+        private void updateSettings(ColorPreset filterColor, double filterThreshold) {
+            color = filterColor;
+            threshold = filterThreshold;
+        }
 
-    public DetecctingTheColorRed (ColorPreset filterColor) {
-         updateSettings(filterColor, -1);
-    }
-    public DetecctingTheColorRed (ColorPreset filterColor, double filterThreshold) {
-        updateSettings(filterColor, filterThreshold);
-    }
-    private  void updateSettings(ColorPreset filterColor, double filterThreshold) {
-        color = filterColor;
-        threshold = filterThreshold;
-    }
-    public void process(Mat input, Mat mask) {
-        channels = new ArrayList<>();
+        public Mat processFrame(Mat input, Mat mask) {
+            channels = new ArrayList<>();
 
-        switch(color) {
-            case RED:
-                if(threshold == -1) {
-                    threshold = 164;
-                }
+            switch (color) {
+                case RED:
+                    if (threshold == -1) {
+                        threshold = 164;
+                    }
 
-                Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
-                Imgproc.GaussianBlur(input, input, new Size(3,3),0);
-                Core.split(input, channels);
-                Imgproc.threshold(channels.get(1), mask, threshold, 255, Imgproc.THRESH_BINARY);
-                break;
-            case BLUE:
-                if (threshold == -1) {
-                    threshold = 145;
-                }
+                    Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
+                    Imgproc.GaussianBlur(input, input, new Size(3, 3), 0);
+                    Core.split(input, channels);
+                    Imgproc.threshold(channels.get(1), mask, threshold, 255, Imgproc.THRESH_BINARY);
+                    break;
+                case BLUE:
+                    if (threshold == -1) {
+                        threshold = 145;
+                    }
 
-                Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
-                Imgproc.GaussianBlur(input, input, new Size(3,3),0);
-                Core.split(input, channels);
-                Core.inRange(channels.get(0), new Scalar(threshold, 150, 40), new Scalar(255, 150, 150), mask);
-                break;
-            case YELLOW:
-                if (threshold == -1) {
-                    threshold = 70;
-                }
+                    Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
+                    Imgproc.GaussianBlur(input, input, new Size(3, 3), 0);
+                    Core.split(input, channels);
+                    Core.inRange(channels.get(0), new Scalar(threshold, 150, 40), new Scalar(255, 150, 150), mask);
+                    break;
+                case YELLOW:
+                    if (threshold == -1) {
+                        threshold = 70;
+                    }
 
-                Mat lab = new Mat(input.size(),0);
-                Imgproc.cvtColor(input, lab, Imgproc.COLOR_RGB2Lab);
-                Mat temp = new Mat();
-                Core.inRange(input, new Scalar(0,0,0), new Scalar(255, 255, 164), temp);
-                Mat mask2 = new Mat(input.size(),0);
-                temp.copyTo(mask2);
-                input.copyTo(input, mask2);
-                mask2.release();
-                temp.release();
-                lab.release();
-                Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
-                Imgproc.GaussianBlur(input,input, new Size(3,3),0);
-                Core.split(input, channels);
-                if (channels.size() > 0) {
-                    Imgproc.threshold(channels.get(1), mask, threshold, 255, Imgproc.THRESH_BINARY_INV);
-                }
-                break;
+                    Mat lab = new Mat(input.size(), 0);
+                    Imgproc.cvtColor(input, lab, Imgproc.COLOR_RGB2Lab);
+                    Mat temp = new Mat();
+                    Core.inRange(input, new Scalar(0, 0, 0), new Scalar(255, 255, 164), temp);
+                    Mat mask2 = new Mat(input.size(), 0);
+                    temp.copyTo(mask2);
+                    input.copyTo(input, mask2);
+                    mask2.release();
+                    temp.release();
+                    lab.release();
+                    Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
+                    Imgproc.GaussianBlur(input, input, new Size(3, 3), 0);
+                    Core.split(input, channels);
+                    if (channels.size() > 0) {
+                        Imgproc.threshold(channels.get(1), mask, threshold, 255, Imgproc.THRESH_BINARY_INV);
+                    }
+                    break;
             }
-            for (int i=0;i<channels.size();i++) {
+            for (int i = 0; i < channels.size(); i++) {
                 channels.get(i).release();
             }
             input.release();
         }
-
+    }
 
 }
 
