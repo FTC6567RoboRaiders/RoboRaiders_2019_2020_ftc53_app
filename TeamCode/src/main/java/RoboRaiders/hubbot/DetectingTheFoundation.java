@@ -150,7 +150,7 @@ public class DetectingTheFoundation extends LinearOpMode
                 case RED:
                 {
                     threshold = 164;
-
+                    input.copyTo(contoursOnFrameMat);
                     Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2Lab);
                     Imgproc.GaussianBlur(input, input, new Size(3, 3), 0);
                     Core.split(input, channels);
@@ -158,7 +158,7 @@ public class DetectingTheFoundation extends LinearOpMode
 
                     Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
                     numContoursFound = contoursList.size();
-                    input.copyTo(contoursOnFrameMat);
+
                     Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
 
 
@@ -202,7 +202,7 @@ public class DetectingTheFoundation extends LinearOpMode
 
                     }
                     if (bestRect != null) {
-                        input.copyTo(contoursOnFrameMat);
+                     //   input.copyTo(contoursOnFrameMat);
                         Imgproc.rectangle(contoursOnFrameMat, bestRect.tl(), bestRect.br(), new Scalar(0, 0, 255), 2);
                         Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
                     }
@@ -213,6 +213,7 @@ public class DetectingTheFoundation extends LinearOpMode
                 {
                     threshold = 145;
 
+                    input.copyTo(contoursOnFrameMat);
                     Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2YUV);
                     Imgproc.GaussianBlur(input, input, new Size(3, 3), 0);
                     Core.split(input, channels);
@@ -221,7 +222,7 @@ public class DetectingTheFoundation extends LinearOpMode
 
                     Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
                     numContoursFound = contoursList.size();
-                    input.copyTo(contoursOnFrameMat);
+
                     Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
 
 
@@ -265,7 +266,7 @@ public class DetectingTheFoundation extends LinearOpMode
 
                     }
                     if (bestRect != null) {
-                        input.copyTo(contoursOnFrameMat);
+                     //   input.copyTo(contoursOnFrameMat);
                         Imgproc.rectangle(contoursOnFrameMat, bestRect.tl(), bestRect.br(), new Scalar(0, 0, 255), 2);
                         Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
                     }
