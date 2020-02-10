@@ -2,6 +2,7 @@ package RoboRaiders.AutonomousMethods;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -245,10 +246,11 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
         // Normally the motor powers for the left side are set to reverse (this allows the motors
         // to turn in the same direction.  For turning however, set the motors on the left side of
-        // the robot to turn forward, which will turn the left motors in the opposite direction
+        // the robot to turn reverse (prior was forward), which will turn the left motors in the opposite direction
         // of the right motors, thus turning the robot.
-        robot.motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
-        robot.motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
+        robot.motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        robot.motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+
 
         Logger L = new Logger("imuTurnPID");
         rrPID.initialize();
@@ -293,7 +295,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
             // effects of friction on the robot
 
             while((opModeIsActive() && (loopcount < 20 &&
-                    !(currentHeading < finalHeading + 3.5 && currentHeading > finalHeading - 3.5)))){
+                    !(currentHeading < finalHeading + 2.5 && currentHeading > finalHeading - 2.5)))){
                 //&& Math.abs(power) > 0.1) {
                 currentHeading = robot.getIntegratedZAxis();
                 power = rrPID.CalculatePIDPowers(finalHeading,currentHeading) * 0.75;
@@ -334,6 +336,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
             L.Debug("Turning Left");
             L.Debug("finalHeading: ",finalHeading);
+            robot.motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+            robot.motorBackRight.setDirection(DcMotor.Direction.REVERSE);
 
 
             // The robot will turn within plus or minus 3.5 degrees and needs to complete the turn
@@ -343,7 +347,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
             // effects of friction on the robot
 
             while((opModeIsActive() && (loopcount < 20 &&
-                    !(currentHeading > finalHeading - 3.5 && currentHeading < finalHeading + 3.5)))){
+                    !(currentHeading > finalHeading - 2.5 && currentHeading < finalHeading + 2.5)))){
                 //&& Math.abs(power) > 0.1) {
                 currentHeading = robot.getIntegratedZAxis();
                 power = rrPID.CalculatePIDPowers(finalHeading,currentHeading) * 0.75;

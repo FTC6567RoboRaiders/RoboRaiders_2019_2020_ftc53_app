@@ -10,7 +10,6 @@ import RoboRaiders.Robot.Robot;
 import RoboRaiders.Robot.RobotTelemetryDisplay;
 
 @Autonomous
-@Disabled
 public class PIDTurnTest extends RRAutonomousMethods {
     public Robot robot = new Robot();
 
@@ -29,7 +28,7 @@ public class PIDTurnTest extends RRAutonomousMethods {
     public void runOpMode() throws InterruptedException {
 
         // Create new instance of robot telemetry display
-        //rtd = new RobotTelemetryDisplay(this,"Nostromo");
+//        rtd = new RobotTelemetryDisplay(this,"Nostromo");
 
         // Create new instance of receiver
         pidUdpReceiver = new PidUdpReceiver();
@@ -77,7 +76,7 @@ public class PIDTurnTest extends RRAutonomousMethods {
         direction = pidUdpReceiver.getDirection();
         degrees = pidUdpReceiver.getDegrees();
 
-        //rtd.displayRobotTelemetry("kP",String.valueOf(kP));
+//        rtd.displayRobotTelemetry("kP",String.valueOf(kP));
     }
 }
 

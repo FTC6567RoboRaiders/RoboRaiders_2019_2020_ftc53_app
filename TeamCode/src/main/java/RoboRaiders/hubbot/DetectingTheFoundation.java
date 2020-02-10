@@ -40,6 +40,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,7 +160,7 @@ public class DetectingTheFoundation extends LinearOpMode
                     Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
                     numContoursFound = contoursList.size();
 
-                    Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
+                    //Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
 
 
                     //Imgproc.findContours(thresholdMat, stickerContours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -204,7 +205,12 @@ public class DetectingTheFoundation extends LinearOpMode
                     if (bestRect != null) {
                      //   input.copyTo(contoursOnFrameMat);
                         Imgproc.rectangle(contoursOnFrameMat, bestRect.tl(), bestRect.br(), new Scalar(0, 0, 255), 2);
-                        Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
+                      //  Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
+
+                        double angleToCenter = ( (bestRect.y+(bestRect.width/2))- 319.5 ) * 0.09375;
+                        DecimalFormat df = new DecimalFormat("##.##");
+                        Imgproc.putText(contoursOnFrameMat,"Angle "+String.valueOf(df.format(angleToCenter)), bestRect.tl(),0,1,new Scalar(255,255,0));
+
                     }
                     return contoursOnFrameMat;
                 }
@@ -223,7 +229,7 @@ public class DetectingTheFoundation extends LinearOpMode
                     Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
                     numContoursFound = contoursList.size();
 
-                    Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
+                    //Imgproc.drawContours(contoursOnFrameMat, contoursList, -1, new Scalar(0, 0, 255), 3, 8);
 
 
                     //Imgproc.findContours(thresholdMat, stickerContours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -268,7 +274,13 @@ public class DetectingTheFoundation extends LinearOpMode
                     if (bestRect != null) {
                      //   input.copyTo(contoursOnFrameMat);
                         Imgproc.rectangle(contoursOnFrameMat, bestRect.tl(), bestRect.br(), new Scalar(0, 0, 255), 2);
-                        Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
+                        Imgproc.rectangle(contoursOnFrameMat, bestRect.tl(), bestRect.br(), new Scalar(0, 0, 255), 2);
+                        //  Imgproc.putText(contoursOnFrameMat, "Chosen", bestRect.tl(), 0, 1, new Scalar(255, 255, 255));
+
+                        double angleToCenter = ( (bestRect.y+(bestRect.width/2))- 319.5 ) * 0.09375;
+                        DecimalFormat df = new DecimalFormat("##.##");
+                        Imgproc.putText(contoursOnFrameMat,"Angle "+String.valueOf(df.format(angleToCenter)), bestRect.tl(),0,1,new Scalar(255,255,0));
+
                     }
                     return contoursOnFrameMat;
 
