@@ -34,7 +34,7 @@ public class PIDTurnTest extends RRAutonomousMethods {
         pidUdpReceiver = new PidUdpReceiver();
 
         //Create new rrPID
-        rrPID = new RoboRaidersPID(0,0,0);
+        rrPID = new RoboRaidersPID(0.012,0,0.029);
 
         // Start listening
         pidUdpReceiver.beginListening();

@@ -28,6 +28,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     public double iza_deltaHeading;
     public float iza_newHeading;
     public Orientation iza_angles;
+    private RoboRaidersPID rrPID = new RoboRaidersPID(0.012,0,0.029);
 
     private static final double STRAFING_SCALE = 0.1;
 
@@ -236,9 +237,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
      * @param degreesToTurn
      * @param direction
      */
-    public void imuTurnPID(RoboRaiders.AutonomousMethods.RoboRaidersPID rrPID,
-                           Robot robot,
-                           float degreesToTurn, String direction) {
+    public void imuTurnPID(RoboRaiders.AutonomousMethods.RoboRaidersPID rrPID, Robot robot, float degreesToTurn, String direction) {
 
         double power = 0.0;
         int loopcount = 0;
@@ -566,7 +565,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void leftStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurn(robot, 83, .2, "right");
+        imuTurnPID(rrPID, robot, 83,  "right");
         encodersMoveRTP(robot, 10, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "left");
         runIntake(robot, -1.0);
@@ -588,7 +587,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     public void rightStoneBlue(Robot robot){
         encodersMove(robot, 18, .8, "forward");
         encodersMoveStrafe(robot, 25, .5, "left");
-        imuTurn(robot, 20, .5, "right");
+        imuTurnPID(rrPID,robot, 20,  "right");
         runIntake(robot, -1.0);
         encodersMoveRTP(robot, 20, .2, "forward");
         double startTouchTime = System.currentTimeMillis();
@@ -598,7 +597,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
         encodersMoveRTP(robot, 20, .8, "backward");
-        imuTurn(robot, 55, .3, "right");
+        imuTurnPID(rrPID,robot, 55,  "right");
         //encodersMoveStrafe(robot, 20, .5, "right");
         encodersMoveRTP(robot, 30, .8, "backward");
 //        stoneOnFoundation(robot);
@@ -608,7 +607,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void middleStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurn(robot, 83, .2, "right");
+        imuTurnPID(rrPID, robot, 83,  "right");
         encodersMoveRTP(robot, 15.5, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "left");
         runIntake(robot, -1.0);
@@ -629,7 +628,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void leftStoneRed(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurn(robot, 83, .2, "left");
+        imuTurnPID(rrPID, robot, 83, "left");
         encodersMoveRTP(robot, 10, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "right");
         runIntake(robot, -1.0);
@@ -650,7 +649,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void middleStoneRed(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurn(robot, 83, .2, "left");
+        imuTurnPID(rrPID, robot, 83,  "left");
         encodersMoveRTP(robot, 15.5, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "right");
         runIntake(robot, -1.0);
@@ -696,7 +695,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     public void rightStoneRed(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
         encodersMoveStrafe(robot, 27, .5, "right");
-        imuTurn(robot, 15, .5, "left");
+        imuTurnPID(rrPID, robot, 15,  "left");
         runIntake(robot, -1.0);
         encodersMoveRTP(robot, 30, .2, "forward");
         double startTouchTime = System.currentTimeMillis();
@@ -706,7 +705,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
         encodersMoveRTP(robot, 25, .8, "backward");
-        imuTurn(robot, 30, .5, "left");
+        imuTurnPID(rrPID, robot, 30, "left");
         //encodersMoveStrafe(robot, 2, .5, "left");
         encodersMoveRTP(robot, 20, .8, "backward");
 //        stoneOnFoundation(robot);
@@ -747,7 +746,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robot.setFoundationGrabberGrabbed(); //foundation servos go down
         robotSleep(2000);
         encodersMoveRTP(robot, 25, .8, "forward"); //robot moves forwards 15 inches
-        imuTurn(robot, 70, .6, "left"); //robot turns 90 degrees right
+        imuTurnPID(rrPID, robot, 70,  "left"); //robot turns 90 degrees right
         //robotSleep(1000);
         robot.setFoundationGrabberUnGrabbed(); //foundation servos come up
         robotSleep(2000);
@@ -765,7 +764,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robot.setFoundationGrabberGrabbed(); //foundation servos go down
         robotSleep(2000);
         encodersMoveRTP(robot, 25, .8, "forward"); //robot moves forwards 15 inches
-        imuTurn(robot, 70, .6, "right"); //robot turns 90 degrees right
+        imuTurnPID(rrPID, robot, 70,  "right"); //robot turns 90 degrees right
         //robotSleep(1000);
         robot.setFoundationGrabberUnGrabbed(); //foundation servos come up
         robotSleep(2000);
@@ -787,7 +786,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void deliverStone(Robot robot){
-        imuTurn(robot, 160, .5, "right");
+        imuTurnPID(rrPID,robot, 160,  "right");
         robot.setCaptureServoUp();
         runIntake(robot, 1.0);
         encodersMoveRTP(robot, 10, .8, "backward");
@@ -815,13 +814,14 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void loadSideFoundationBlue(Robot robot){
+
         encodersMoveRTP(robot, 25, .8, "backward");
-        imuTurn(robot, 70, .6, "right");
+        imuTurnPID(rrPID, robot, 70, "right");
         encodersMoveRTP(robot, 12.5, .5, "backward");
         robot.setFoundationGrabberGrabbed(); //foundation servos go down
         robotSleep(2000);
         encodersMoveRTP(robot, 25, .8, "forward"); //robot moves forwards 15 inches
-        imuTurn(robot, 70, .6, "left"); //robot turns 90 degrees right
+        imuTurnPID(rrPID, robot, 70, "left"); //robot turns 90 degrees right
         //robotSleep(1000);
         robot.setFoundationGrabberUnGrabbed(); //foundation servos come up
         robotSleep(2000);

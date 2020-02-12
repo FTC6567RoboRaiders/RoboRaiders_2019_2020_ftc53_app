@@ -2,6 +2,7 @@ package RoboRaiders.AutonomousOptions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import RoboRaiders.AutonomousMethods.RRAutonomousMethods;
+import RoboRaiders.AutonomousMethods.RoboRaidersPID;
 import RoboRaiders.Robot.Robot;
 import RoboRaiders.Robot.RobotTelemetryDisplay;
 
@@ -22,7 +23,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
     public void runOpMode() throws InterruptedException {
         robot.initialize(hardwareMap);
 
-        // Ask drivers how they want autonomous to work
+        //     Ask drivers how they want autonomous to work
         RoboRaiders.AutonomousOptions.AutoOptions myAO = new RoboRaiders.AutonomousOptions.AutoOptions(this);
 
         // Set up robot telemetry
