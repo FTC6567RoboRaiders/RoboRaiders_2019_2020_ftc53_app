@@ -32,6 +32,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     private static final double STRAFING_SCALE = 0.1;
 
+    private int stoneLocation = 999;
+
 
     public void liftMotorRTPDriveWithStone(Robot robot) {
         robot.resetLiftEncoder();
@@ -511,11 +513,20 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     }
 
+    public void setStoneLocation(int stoneLocation){
+        this.stoneLocation = stoneLocation;
+    }
+
+    public int getStoneLocation(){
+        return this.getStoneLocation();
+    }
+
     public void stoneSamplingWebcamBlue(Robot robot){ //NOTE THE PATTERNS MAY OR MAY NOT BE SCREWED UP!!!
 
         float leftRec[]  = {10f, 3f, 15f, 11f};
         float rightRec[] = {10f, 13f, 15f, 22f};
         int stoneLocation = stoneDetectionWebcam(leftRec, rightRec);
+        setStoneLocation(stoneLocation);
 
 
         // Gets first sky stone in the quarry.  The first skystone is furtherest away from the
@@ -565,6 +576,37 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 //        }
     }
 
+    public void getSecondStoneBlue(Robot robot){
+        int stoneLocation = getStoneLocation();
+        switch (stoneLocation){
+            case 1:
+                secondRightSkyStoneBlue(robot);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 999:
+                break;
+
+        }
+    }
+
+    public void secondRightSkyStoneBlue(Robot robot){
+        encodersMoveRTP(robot, 55, .8, "forward");
+        encodersMoveStrafe(robot, 25, .5, "left");
+        runIntake(robot, -1.0);
+        encodersMoveRTP(robot, 10, .2, "forward");
+        double startTouchTime = System.currentTimeMillis();
+        while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
+        runIntake(robot, 0.0);
+        robot.setCaptureServoDown();
+        robotSleep(500);
+        liftMotorRTPDriveWithStone(robot);
+        encodersMoveStrafe(robot, 25, .5, "right");
+        encodersMoveRTP(robot, 55, .8, "backward");
+    }
+
     public void leftStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
         imuTurnPID(rrPID, robot, 90,  "right");
@@ -587,7 +629,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void rightStoneBlue(Robot robot){
-        encodersMove(robot, 18, .8, "forward");
+        encodersMove(robot, 16.5, .8, "forward");
         encodersMoveStrafe(robot, 25, .5, "left");
         imuTurnPID(rrPID,robot, 45,  "right");
         runIntake(robot, -1.0);
@@ -717,23 +759,24 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void stoneOnFoundation(Robot robot){
-        int liftCount = (int)robot.liftCalculateCounts(16);
+        int liftCount = (int)robot.liftCalculateCounts(17);
         robot.setLiftMotorTargetPosition(liftCount);
         robot.setLiftMotorPower(0.8);
-        while (opModeIsActive() && robot.getCurrentLiftPosition() < liftCount){}
+        while (opModeIsActive() && robot.getCurrentLiftPosition() < liftCount - 50){}
         robot.setLiftMotorPower(0.0);
         robot.setStoneSwingServoOut();
         robotSleep(1000);
         robot.setCaptureServoUp();
+        robotSleep(1000);
     }
 
     public void resetStoneMechanism(Robot robot){
         robot.setStoneSwingServoIn();
         robotSleep(500);
-        int liftPositionDown = (int)robot.getCurrentLiftPosition() - (int)robot.liftCalculateCounts(16);
+        int liftPositionDown = (int)robot.getCurrentLiftPosition() - (int)robot.liftCalculateCounts(17);
         robot.setLiftMotorTargetPosition(liftPositionDown);
         robot.setLiftMotorPower(0.8);
-        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown){}
+        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown - 50){}
         robot.setLiftMotorPower(0.0);
         robot.resetLiftEncoder();
         robot.runLiftWithEncoderRTP();
