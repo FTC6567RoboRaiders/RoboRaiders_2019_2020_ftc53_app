@@ -58,7 +58,7 @@ public class Robot {
 
     //Robot Constants
     private static final double CAPTURE_SERVO_UP = 0.9;
-    private static final double CAPTURE_SERVO_DOWN = 0.3;
+    private static final double CAPTURE_SERVO_DOWN = 0.25;          // was 0.3
     private static final double SWING_SERVO_OUT = 1.0;                       //* from testing with SwingServoTester.java
     private static final double SWING_SERVO_IN = 0.0;                         //* from testing with SwingServoTester.java
     private static final double FOUNDATION_SERVO_GRAB_LEFT = 0.45;
