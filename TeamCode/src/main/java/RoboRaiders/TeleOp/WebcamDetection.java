@@ -72,7 +72,7 @@ public class WebcamDetection extends LinearOpMode {
         rightRec[3] = 22f;
 
         webcam.openCameraDevice();
-        stone_pipeline = new RoboRaidersPipelineWebcam(pattern,leftRec,rightRec);
+        stone_pipeline = new RoboRaidersPipelineWebcam(pattern,leftRec,rightRec,this);
         webcam.setPipeline(stone_pipeline);
         webcam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
 
