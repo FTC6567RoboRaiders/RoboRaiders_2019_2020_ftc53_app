@@ -511,8 +511,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void stoneSamplingWebcamBlue(Robot robot){ //NOTE THE PATTERNS MAY OR MAY NOT BE SCREWED UP!!!
 
-        float leftRec[]  = {9f, 2f, 15f, 11f};
-        float rightRec[] = {9f, 13f, 15f, 22f};
+        float leftRec[]  = {10f, 3f, 15f, 11f};
+        float rightRec[] = {10f, 13f, 15f, 22f};
         int stoneLocation = stoneDetectionWebcam(leftRec, rightRec);
 
 

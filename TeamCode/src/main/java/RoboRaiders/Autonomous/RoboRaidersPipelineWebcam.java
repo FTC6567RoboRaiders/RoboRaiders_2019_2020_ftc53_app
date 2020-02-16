@@ -204,5 +204,7 @@ public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
             return pattern;
     }
 
+    public int getLeft_br() { return left_br;}
 
+    public int getRight_br() { return right_br;}
 }
