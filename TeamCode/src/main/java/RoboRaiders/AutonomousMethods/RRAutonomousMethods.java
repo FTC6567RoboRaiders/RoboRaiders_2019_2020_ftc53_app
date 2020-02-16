@@ -451,6 +451,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         }
         webcam.stopStreaming();
         telemetry.addData("PATTERN", stone_pipeline.getPattern());
+        telemetry.addData("left brightness", stone_pipeline.getLeft_br());
+        telemetry.addData("right brightness", stone_pipeline.getRight_br());
         telemetry.update();
         return stone_pipeline.getPattern();
 
@@ -597,7 +599,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
         encodersMoveRTP(robot, 20, .8, "backward");
-        imuTurnPID(rrPID,robot, 45,  "right");
+        imuTurnPID(rrPID,robot, 60,  "right");
         //encodersMoveStrafe(robot, 20, .5, "right");
         encodersMoveRTP(robot, 30, .8, "backward");
 //        stoneOnFoundation(robot);

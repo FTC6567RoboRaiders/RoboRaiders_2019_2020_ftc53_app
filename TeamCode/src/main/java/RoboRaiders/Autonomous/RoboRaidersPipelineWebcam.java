@@ -104,7 +104,7 @@ public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
             right_br = get_brightness((int) right_mean.val[0], (int) right_mean.val[1], (int) right_mean.val[2]);
 
             // The skystone is not in frame since the stones in frame are "bright"
-            if (left_br > 100 && right_br > 100) {
+            if (left_br > 95 && right_br > 95) {
                 pattern = 1;
                 if (op != null){
                     op.telemetry.addLine("pattern is equal to 1, first check");
@@ -113,7 +113,7 @@ public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
 
 
             // The skystone is in frame but located on the right
-            else if (left_br > 100 && right_br < 100) {
+            else if (left_br > 95 && right_br < 95) {
                 pattern = 3;
                 if (op != null){
                     op.telemetry.addLine("pattern is equal to 3, second check");
@@ -121,7 +121,7 @@ public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
             }
 
             // The skeystone is in frame but located on the left
-            else if (left_br < 100 && right_br > 100) {
+            else if (left_br < 95 && right_br > 95) {
                 pattern = 2;
                 if (op != null){
                     op.telemetry.addLine("pattern is equal to 2, third check");
@@ -130,7 +130,7 @@ public class RoboRaidersPipelineWebcam extends OpenCvPipeline {
 
             // The skystone has not been found, so look at the brightness of the stones in frame
             // If both stones are not "bright"
-            else if (left_br < 100 && right_br < 100) {
+            else if (left_br < 95 && right_br < 95) {
 
                 // The left stone in frame is brighter than the right stone in frame
                 if (left_br > right_br) {
