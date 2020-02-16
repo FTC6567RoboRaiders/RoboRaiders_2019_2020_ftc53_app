@@ -23,41 +23,41 @@ public class WebcamDetection extends LinearOpMode {
         float leftRec[] = {9f, 5f,15f,15f};
         float rightRec[] = {9f, 17f, 15f, 27f};
 
-        double startTime;
-
-
-
-        // red side
-        leftRec[0] = 9f;
-        leftRec[1] = 5f;
-        leftRec[2] = 15f;
-        leftRec[3] = 15f;
-
-        rightRec[0] = 9f;
-        rightRec[1] = 15f;
-        rightRec[2] = 15f;
-        rightRec[3] = 25f;
-
-
+       double startTime;
+//
+//
+//
+//        // red side
+//        leftRec[0] = 9f;
+//        leftRec[1] = 5f;
+//        leftRec[2] = 15f;
+//        leftRec[3] = 15f;
+//
+//        rightRec[0] = 9f;
+//        rightRec[1] = 15f;
+//        rightRec[2] = 15f;
+//        rightRec[3] = 25f;
+//
+//
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+////        webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-
-        webcam.openCameraDevice();
-        stone_pipeline = new RoboRaidersPipelineWebcam(pattern,leftRec,rightRec);
-        webcam.setPipeline(stone_pipeline);
-
-        webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-
-        waitForStart();
-
-        startTime = System.currentTimeMillis();
-        while (opModeIsActive() && (System.currentTimeMillis() - startTime) < 5000) {
-            super.updateTelemetry(telemetry);
-            telemetry.addData("PATTERN", stone_pipeline.getPattern());
-        }
-
-        webcam.stopStreaming();
+//
+//        webcam.openCameraDevice();
+//        stone_pipeline = new RoboRaidersPipelineWebcam(pattern,leftRec,rightRec);
+//        webcam.setPipeline(stone_pipeline);
+//
+//        webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+//
+//        waitForStart();
+//
+//        startTime = System.currentTimeMillis();
+//        while (opModeIsActive() && (System.currentTimeMillis() - startTime) < 5000) {
+//            super.updateTelemetry(telemetry);
+//            telemetry.addData("PATTERN", stone_pipeline.getPattern());
+//        }
+//
+//        webcam.stopStreaming();
 
 
         // blue side
@@ -67,9 +67,11 @@ public class WebcamDetection extends LinearOpMode {
         leftRec[3] = 11f;
 
         rightRec[0] = 9f;
-        rightRec[1] = 10f;
+        rightRec[1] = 13f;
         rightRec[2] = 15f;
         rightRec[3] = 22f;
+
+        pattern = 999;
 
         webcam.openCameraDevice();
         stone_pipeline = new RoboRaidersPipelineWebcam(pattern,leftRec,rightRec,this);
@@ -77,7 +79,7 @@ public class WebcamDetection extends LinearOpMode {
         webcam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
 
         startTime = System.currentTimeMillis();
-        while (opModeIsActive() && (System.currentTimeMillis() - startTime) < 5000) {
+        while (opModeIsActive() && (System.currentTimeMillis() - startTime) < 200000) {
             super.updateTelemetry(telemetry);
             telemetry.addData("PATTERN", stone_pipeline.getPattern());
         }
