@@ -2,13 +2,12 @@ package RoboRaiders.AutonomousOptions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import RoboRaiders.AutonomousMethods.RRAutonomousMethods;
-import RoboRaiders.AutonomousMethods.RoboRaidersPID;
 import RoboRaiders.Robot.Robot;
 import RoboRaiders.Robot.RobotTelemetryDisplay;
 
 @Autonomous
 
-public class AutonomousOptionsV1 extends RRAutonomousMethods {
+public class AutonomousOptionsV2 extends RRAutonomousMethods {
 
     public boolean wait              = false;          // wait?
     public boolean allianceBlue      = false;          // Default Red Alliance
@@ -24,7 +23,7 @@ public class AutonomousOptionsV1 extends RRAutonomousMethods {
         robot.initialize(hardwareMap);
 
         //     Ask drivers how they want autonomous to work
-        RoboRaiders.AutonomousOptions.AutoOptions myAO = new RoboRaiders.AutonomousOptions.AutoOptions(this);
+        AutoOptions myAO = new AutoOptions(this);
 
         // Set up robot telemetry
         RobotTelemetryDisplay rtd = new RobotTelemetryDisplay(this, "BotChungus");
