@@ -381,8 +381,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
         // Reverse the motor direction on the left motors so that all motors spin in the same
         // direction
-        robot.motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        robot.motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        robot.motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        robot.motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
 
 
         L.Debug("End");
@@ -565,7 +565,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void leftStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurnPID(rrPID, robot, 83,  "right");
+        imuTurnPID(rrPID, robot, 90,  "right");
         encodersMoveRTP(robot, 10, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "left");
         runIntake(robot, -1.0);
@@ -607,7 +607,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void middleStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
-        imuTurnPID(rrPID, robot, 83,  "right");
+        imuTurnPID(rrPID, robot, 90,  "right");
         encodersMoveRTP(robot, 15.5, .6, "backward");
         encodersMoveStrafe(robot, 19, .5, "left");
         runIntake(robot, -1.0);

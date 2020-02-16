@@ -12,7 +12,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import RoboRaiders.Autonomous.RoboRaidersPipelineWebcam;
 
 @TeleOp
-@Disabled
 public class WebcamDetection extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
     int pattern = 999;
