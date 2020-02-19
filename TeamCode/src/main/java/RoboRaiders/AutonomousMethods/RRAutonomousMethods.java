@@ -578,8 +578,11 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void getSecondStoneBlue(Robot robot){
         int stoneLocation = getStoneLocation();
+        telemetry.addLine().addData("stoneLocation",stoneLocation);
+        telemetry.update();
         switch (stoneLocation){
             case 1:
+                telemetry.addLine().addData("stone location",stoneLocation);
                 secondRightSkyStoneBlue(robot);
                 break;
             case 2:
@@ -759,7 +762,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void stoneOnFoundation(Robot robot){
-        int liftCount = (int)robot.liftCalculateCounts(17);
+        int liftCount = (int)robot.liftCalculateCounts(18);
         robot.setLiftMotorTargetPosition(liftCount);
         robot.setLiftMotorPower(0.8);
         while (opModeIsActive() && robot.getCurrentLiftPosition() < liftCount - 50){}
@@ -772,11 +775,17 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void resetStoneMechanism(Robot robot){
         robot.setStoneSwingServoIn();
-        robotSleep(500);
-        int liftPositionDown = (int)robot.getCurrentLiftPosition() - (int)robot.liftCalculateCounts(17);
+        robotSleep(1000);
+        int liftPositionDown = (int)robot.getCurrentLiftPosition() - (int)robot.liftCalculateCounts(18);
+        telemetry.addLine().addData("current position",robot.getCurrentLiftPosition());
         robot.setLiftMotorTargetPosition(liftPositionDown);
         robot.setLiftMotorPower(0.8);
-        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown - 50){}
+        double liftDownTime = System.currentTimeMillis();
+        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown - 55 && (System.currentTimeMillis() - liftDownTime) < 1000){
+            telemetry.addLine().addData("encoderCount", robot.getCurrentLiftPosition());
+            telemetry.addLine().addData("liftPosition", liftPositionDown);
+            telemetry.update();
+        }
         robot.setLiftMotorPower(0.0);
         robot.resetLiftEncoder();
         robot.runLiftWithEncoderRTP();
