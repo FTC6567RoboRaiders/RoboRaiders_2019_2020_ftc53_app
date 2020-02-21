@@ -154,6 +154,11 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
             robot.setDriveMotorPower(0.0, 0.0, 0.0, 0.0); //stop the robot
         }
 
+        // smksmksmk need to reset the encoders
+        // smksmksmk need to reset the encoders
+        // smksmksmk need to reset the encoders
+        // smksmksmk need to reset the encoders
+
         robot.runWithoutEncoders(); //sets the mode back to run without encoder
     }
 
@@ -518,7 +523,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public int getStoneLocation(){
-        return this.getStoneLocation();
+        return this.stoneLocation;
     }
 
     public void stoneSamplingWebcamBlue(Robot robot){ //NOTE THE PATTERNS MAY OR MAY NOT BE SCREWED UP!!!
@@ -781,7 +786,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         robot.setLiftMotorTargetPosition(liftPositionDown);
         robot.setLiftMotorPower(0.8);
         double liftDownTime = System.currentTimeMillis();
-        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown - 55 && (System.currentTimeMillis() - liftDownTime) < 1000){
+        while (opModeIsActive() && robot.getCurrentLiftPosition() > liftPositionDown - 55 && (System.currentTimeMillis() - liftDownTime) < 1500){
             telemetry.addLine().addData("encoderCount", robot.getCurrentLiftPosition());
             telemetry.addLine().addData("liftPosition", liftPositionDown);
             telemetry.update();
