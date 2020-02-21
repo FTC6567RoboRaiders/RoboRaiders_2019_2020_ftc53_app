@@ -94,14 +94,14 @@ public class AutonomousOptionsV2 extends RRAutonomousMethods {
                     else{
                         //foundation no
                         //deliverStone(robot);
-                        stoneOnFoundation(robot);
-                        robotSleep(500);
-                        resetStoneMechanism(robot);
-                        robotSleep(500);
-                        getSecondStoneBlue(robot);
-                        stoneOnFoundation(robot);
-                        resetStoneMechanism(robot);
-                    }
+//                        stoneOnFoundation(robot);
+//                        robotSleep(500);
+//                        resetStoneMechanism(robot);
+//                        robotSleep(500);
+//                        getSecondStoneBlue(robot);
+//                        stoneOnFoundation(robot);
+//                        resetStoneMechanism(robot);
+//                    }
 
                     if (parkPerimeter) {
                         parkSkyBridgeBlue(robot);
