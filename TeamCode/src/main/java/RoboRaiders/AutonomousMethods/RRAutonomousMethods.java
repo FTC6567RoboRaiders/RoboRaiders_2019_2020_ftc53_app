@@ -619,16 +619,16 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         encodersMoveRTP(robot, 18, .8, "forward");
         imuTurnPID(rrPID, robot, 90,  "right");
         encodersMoveRTP(robot, 10, .6, "backward");
-        encodersMoveStrafe(robot, 19, .5, "left");
+        encodersMoveStrafe(robot, 23, .7, "left");
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 10, .2, "forward");
+        encodersMoveRTP(robot, 14, 1.0, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
         runIntake(robot, 0.0);
         robot.setCaptureServoDown();
         robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
-        encodersMoveStrafe(robot, 13, .8, "right");
+        encodersMoveStrafe(robot, 17, .8, "right");
         encodersMoveRTP(robot, 50, .8, "backward");
 //        encodersMoveStrafe(robot, 10, .5, "right");
 //        stoneOnFoundation(robot);
@@ -638,10 +638,11 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void rightStoneBlue(Robot robot){
         encodersMove(robot, 16.5, .8, "forward");
-        encodersMoveStrafe(robot, 25, .5, "left");
+        encodersMoveStrafe(robot, 25, .2, "left");
         imuTurnPID(rrPID,robot, 45,  "right");
+        robotSleep(100);
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 20, .6, "forward");
+        encodersMoveRTP(robot, 20, .45, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 5000){}
         runIntake(robot, 0.0);
@@ -661,16 +662,16 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         encodersMoveRTP(robot, 18, .8, "forward");
         imuTurnPID(rrPID, robot, 90,  "right");
         encodersMoveRTP(robot, 15.5, .6, "backward");
-        encodersMoveStrafe(robot, 19, .5, "left");
+        encodersMoveStrafe(robot, 21, .7, "left");//D = 19, P = .5
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 10, .2, "forward");
+        encodersMoveRTP(robot, 12, 1.0, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500) {} //keep going as long as it is under 1.5 seconds and the distance sensor is under 1 cm
         runIntake(robot, 0.0);
         robot.setCaptureServoDown();
         robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
-        encodersMoveStrafe(robot, 13, .8, "right");
+        encodersMoveStrafe(robot, 15, .8, "right");
         encodersMoveRTP(robot, 47, .8, "backward");
 //        encodersMoveStrafe(robot, 10, .5, "right");
 //        stoneOnFoundation(robot);

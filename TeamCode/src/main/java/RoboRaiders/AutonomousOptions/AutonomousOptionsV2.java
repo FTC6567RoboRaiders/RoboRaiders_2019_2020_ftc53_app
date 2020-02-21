@@ -101,7 +101,7 @@ public class AutonomousOptionsV2 extends RRAutonomousMethods {
 //                        getSecondStoneBlue(robot);
 //                        stoneOnFoundation(robot);
 //                        resetStoneMechanism(robot);
-//                    }
+                    }
 
                     if (parkPerimeter) {
                         parkSkyBridgeBlue(robot);
