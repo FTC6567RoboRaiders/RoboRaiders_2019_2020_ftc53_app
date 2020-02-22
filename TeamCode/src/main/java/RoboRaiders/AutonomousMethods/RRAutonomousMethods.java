@@ -538,10 +538,10 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         // field perimeter
         switch (stoneLocation){
             case 1: //stone is on leftmost (not if the frame)
-                rightStoneBlue(robot);
+                leftStoneBlue(robot);
                 break;
             case 3: //stone is on the left (middle)
-                leftStoneBlue(robot);
+                rightStoneBlue(robot);
                 break;
             case 2: //stone is on the right
                 middleStoneBlue(robot);
@@ -615,7 +615,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         encodersMoveRTP(robot, 55, .8, "backward");
     }
 
-    public void leftStoneBlue(Robot robot){
+    public void rightStoneBlue(Robot robot){
         encodersMoveRTP(robot, 18, .8, "forward");
         imuTurnPID(rrPID, robot, 90,  "right");
         encodersMoveRTP(robot, 10, .6, "backward");
@@ -636,7 +636,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 //        encodersMoveStrafe(robot, 5, 0.5, "left");
     }
 
-    public void rightStoneBlue(Robot robot){
+    public void leftStoneBlue(Robot robot){
         encodersMove(robot, 16.5, .8, "forward");
         encodersMoveStrafe(robot, 25, .2, "left");
         imuTurnPID(rrPID,robot, 45,  "right");
