@@ -586,52 +586,53 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         // then just go and park
         // Get second sky stone in quarry.  The second skystone is closest to the field
         // perimeter
-//        switch (stoneLocation){
-//            case 1: //stone is on leftmost (not if the frame)
-//                left2ndSkyStone(robot);
-//                break;
-//            case 3: //stone is on the left (middle)
-//                right2ndSkyStone(robot);
-//                break;
-//            case 2: //stone is on the right
-//                middle2ndSkyStone(robot);
-//                break;
-//            case 999:
-//                middle2ndSkyStone(robot);
-//                break;
-//        }
-    }
-
-    public void getSecondStoneBlue(Robot robot){
-        int stoneLocation = getStoneLocation();
-        telemetry.addLine().addData("stoneLocation",stoneLocation);
-        telemetry.update();
         switch (stoneLocation){
-            case 1:
-                telemetry.addLine().addData("stone location",stoneLocation);
-                secondRightSkyStoneBlue(robot);
+            case 1: //stone is on leftmost (not if the frame)
+                secondLeftSkyStoneBlue(robot);
                 break;
-            case 2:
+            case 3: //stone is on the left (middle)
+                //right2ndSkyStone(robot);
                 break;
-            case 3:
+            case 2: //stone is on the right
+                //middle2ndSkyStone(robot);
                 break;
             case 999:
+                //middle2ndSkyStone(robot);
                 break;
-
         }
     }
 
-    public void secondRightSkyStoneBlue(Robot robot){
+//    public void getSecondStoneBlue(Robot robot){
+//        int stoneLocation = getStoneLocation();
+//        telemetry.addLine().addData("stoneLocation",stoneLocation);
+//        telemetry.update();
+//        switch (stoneLocation){
+//            case 1:
+//                telemetry.addLine().addData("stone location",stoneLocation);
+//                left2ndSkyStoneBlue(robot);
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//            case 999:
+//                break;
+//
+//        }
+//    }
+
+    public void secondLeftSkyStoneBlue(Robot robot){
         encodersMoveRTP(robot, 55, .8, "forward");
+        imuTurnPID(rrPID, robot, 180, "left");
         encodersMoveStrafe(robot, 25, .5, "left");
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 10, .2, "forward");
+        encodersMoveRTP(robot, 10, .4, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
         runIntake(robot, 0.0);
-        robot.setCaptureServoDown();
-        robotSleep(500);
-        liftMotorRTPDriveWithStone(robot);
+        //robot.setCaptureServoDown();
+        //robotSleep(500);
+        //liftMotorRTPDriveWithStone(robot);
         encodersMoveStrafe(robot, 25, .5, "right");
         encodersMoveRTP(robot, 55, .8, "backward");
     }
