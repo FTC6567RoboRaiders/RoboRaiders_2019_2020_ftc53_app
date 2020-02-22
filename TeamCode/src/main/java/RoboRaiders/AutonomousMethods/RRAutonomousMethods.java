@@ -29,6 +29,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     public float iza_newHeading;
     public Orientation iza_angles;
     private RoboRaidersPID rrPID = new RoboRaidersPID(0.012,0,0.029);
+    private RoboRaidersPID rrPID180 = new RoboRaidersPID(0.008, 0, 0);
 
     private static final double STRAFING_SCALE = 0.1;
 
@@ -248,6 +249,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
         double power = 0.0;
         int loopcount = 0;
+        int maxLoopCount = 0;
 
 
         // Normally the motor powers for the left side are set to reverse (this allows the motors
@@ -278,6 +280,9 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         // from the current heading.  For turning left, the number of degrees to turn is incremented
         // to the current heading.
 
+        if (degreesToTurn <= 90){maxLoopCount = 20;}
+        else {maxLoopCount = 50;}
+
         if (direction.equals("right")) { //if the desired direction is right
             finalHeading = currentHeading - degreesToTurn;
             telemetry.addLine().addData("currentHeading", currentHeading);
@@ -300,7 +305,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
             // few degrees, however, the small amounts of power wasn't quite enough to over come the
             // effects of friction on the robot
 
-            while((opModeIsActive() && (loopcount < 20 &&
+            while((opModeIsActive() && (loopcount < maxLoopCount &&
                     !(currentHeading < finalHeading + 2.5 && currentHeading > finalHeading - 2.5)))){
                 //&& Math.abs(power) > 0.1) {
                 currentHeading = robot.getIntegratedZAxis();
@@ -352,7 +357,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
             // few degrees, however, the small amounts of power wasn't quite enough to over come the
             // effects of friction on the robot
 
-            while((opModeIsActive() && (loopcount < 20 &&
+            while((opModeIsActive() && (loopcount < maxLoopCount &&
                     !(currentHeading > finalHeading - 2.5 && currentHeading < finalHeading + 2.5)))){
                 //&& Math.abs(power) > 0.1) {
                 currentHeading = robot.getIntegratedZAxis();
@@ -537,11 +542,11 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 //        runIntake(robot, 0.0);
 //        imuTurnPID(rrPID, robot, 85, "right");
 
-        imuTurnPID(rrPID, robot, 180, "left");
+        imuTurnPID(rrPID180, robot, 180, "left");
         runIntake(robot, 1.0);
-        double startTouchTime = System.currentTimeMillis();
-        while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
-        runIntake(robot, 0.0);
+//        double startTouchTime = System.currentTimeMillis();
+//        while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
+//        runIntake(robot, 0.0);
 
     }
 
@@ -600,6 +605,7 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
                 //middle2ndSkyStone(robot);
                 break;
         }
+        ejectStone(robot);
     }
 
 //    public void getSecondStoneBlue(Robot robot){
@@ -622,19 +628,20 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 //    }
 
     public void secondLeftSkyStoneBlue(Robot robot){
-        encodersMoveRTP(robot, 55, .8, "forward");
-        imuTurnPID(rrPID, robot, 180, "left");
-        encodersMoveStrafe(robot, 25, .5, "left");
+        encodersMoveRTP(robot, 62, .8, "backward");
+        runIntake(robot, 0.0);
+        imuTurnPID(rrPID180, robot, 180, "left");
+        encodersMoveStrafe(robot, 16, .5, "left");
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 10, .4, "forward");
+        encodersMoveRTP(robot, 10, .8, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
         runIntake(robot, 0.0);
         //robot.setCaptureServoDown();
         //robotSleep(500);
         //liftMotorRTPDriveWithStone(robot);
-        encodersMoveStrafe(robot, 25, .5, "right");
-        encodersMoveRTP(robot, 55, .8, "backward");
+        encodersMoveStrafe(robot, 21, .5, "right");
+        encodersMoveRTP(robot, 60, .8, "backward");
     }
 
     public void rightStoneBlue(Robot robot){
