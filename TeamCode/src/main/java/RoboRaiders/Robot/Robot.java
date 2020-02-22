@@ -130,6 +130,9 @@ public class Robot {
         intakeMotorRight.setPower(0.0);
         liftMotor.setPower(0.0);
 
+        // Stop and reset encoders
+        resetEncoders();
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODER if encoders are installed, and we wouldn't use encoders for teleop, even if we
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //will use them in teleop.

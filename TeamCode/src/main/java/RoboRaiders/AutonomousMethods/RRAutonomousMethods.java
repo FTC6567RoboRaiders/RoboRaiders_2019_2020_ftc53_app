@@ -526,6 +526,25 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
         return this.stoneLocation;
     }
 
+    public void ejectStone(Robot robot){
+//        imuTurnPID(rrPID, robot, 90, "left");
+//        //robot.setCaptureServoUp();
+//        encodersMoveRTP(robot, 24, .8, "forward");
+//        runIntake(robot, 1.0);
+//        double startTouchTime = System.currentTimeMillis();
+//        while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
+//        encodersMoveRTP(robot, 24, .4, "backward");
+//        runIntake(robot, 0.0);
+//        imuTurnPID(rrPID, robot, 85, "right");
+
+        imuTurnPID(rrPID, robot, 180, "left");
+        runIntake(robot, 1.0);
+        double startTouchTime = System.currentTimeMillis();
+        while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 1500){}
+        runIntake(robot, 0.0);
+
+    }
+
     public void stoneSamplingWebcamBlue(Robot robot){ //NOTE THE PATTERNS MAY OR MAY NOT BE SCREWED UP!!!
 
         float leftRec[]  = {10f, 3f, 15f, 11f};
@@ -550,6 +569,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
                 middleStoneBlue(robot);
                 break;
         }
+
+        ejectStone(robot);
 
         /**
          * at this point the robot has deposited the first stone on the foundation!
@@ -638,21 +659,21 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
 
     public void leftStoneBlue(Robot robot){
         encodersMove(robot, 16.5, .8, "forward");
-        encodersMoveStrafe(robot, 25, .2, "left");
+        encodersMoveStrafe(robot, 25, .5, "left");
         imuTurnPID(rrPID,robot, 45,  "right");
-        robotSleep(100);
+        //robotSleep(100);
         runIntake(robot, -1.0);
-        encodersMoveRTP(robot, 20, .45, "forward");
+        encodersMoveRTP(robot, 20, .3, "forward");
         double startTouchTime = System.currentTimeMillis();
         while (robot.getStoneDistance() <= 1.1 && System.currentTimeMillis()-startTouchTime < 5000){}
         runIntake(robot, 0.0);
-        robot.setCaptureServoDown();
-        robotSleep(500);
+        //robot.setCaptureServoDown();
+        //robotSleep(500);
         liftMotorRTPDriveWithStone(robot);
-        encodersMoveRTP(robot, 20, .8, "backward");
+        encodersMoveRTP(robot, 19, .8, "backward");
         imuTurnPID(rrPID,robot, 60,  "right");
         //encodersMoveStrafe(robot, 20, .5, "right");
-        encodersMoveRTP(robot, 30, .8, "backward");
+        encodersMoveRTP(robot, 35, .8, "backward");
 //        stoneOnFoundation(robot);
 //        resetStoneMechanism(robot);
 //        encodersMoveStrafe(robot, 5, 0.5, "left");
@@ -836,8 +857,8 @@ public abstract class RRAutonomousMethods extends LinearOpMode {
     }
 
     public void parkSkyBridgeBlue(Robot robot){
-        encodersMoveRTP(robot, 10, .5, "backward");
-        encodersMoveStrafe(robot, 5, .5, "right");
+        encodersMoveRTP(robot, 30, .5, "forward");
+        encodersMoveStrafe(robot, 25, .5, "right");
     }
 
     public void parkSkyBridgeRed(Robot robot){

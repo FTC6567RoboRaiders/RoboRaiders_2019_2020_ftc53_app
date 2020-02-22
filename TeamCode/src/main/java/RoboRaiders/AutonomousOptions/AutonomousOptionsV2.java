@@ -104,7 +104,7 @@ public class AutonomousOptionsV2 extends RRAutonomousMethods {
                     }
 
                     if (parkPerimeter) {
-                        parkSkyBridgeBlue(robot);
+                        //parkSkyBridgeBlue(robot);
                     }
 
                     else {}
